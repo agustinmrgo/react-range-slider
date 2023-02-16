@@ -1,0 +1,45 @@
+<div class="range-slider">
+  <div class="slider-track">
+    <div class="slider-progress"></div>
+  </div>
+  <div class="slider-thumb"></div>
+</div>
+
+<script>
+  const slider = document.querySelector(".range-slider");
+  const thumb = slider.querySelector(".slider-thumb");
+  const progress = slider.querySelector(".slider-progress");
+  const track = slider.querySelector(".slider-track");
+
+  thumb.addEventListener("mousedown", startDragging);
+  thumb.addEventListener("touchstart", startDragging);
+
+  function startDragging(event) {
+    event.preventDefault();
+
+    document.addEventListener("mousemove", dragThumb);
+    document.addEventListener("touchmove", dragThumb);
+    document.addEventListener("mouseup", stopDragging);
+    document.addEventListener("touchend", stopDragging);
+  }
+
+  function dragThumb(event) {
+    const trackWidth = track.offsetWidth;
+    const thumbWidth = thumb.offsetWidth;
+    const thumbPosition = event.clientX || event.touches[0].clientX;
+    const trackOffset = track.getBoundingClientRect().left;
+    const progressWidth = Math.max(
+      0,
+      Math.min(trackWidth, thumbPosition - trackOffset - thumbWidth / 2)
+    );
+
+    progress.style.width = progressWidth + "px";
+  }
+
+  function stopDragging() {
+    document.removeEventListener("mousemove", dragThumb);
+    document.removeEventListener("touchmove", dragThumb);
+    document.removeEventListener("mouseup", stopDragging);
+    document.removeEventListener("touchend", stopDragging);
+  }
+</script>
