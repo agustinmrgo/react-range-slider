@@ -27,17 +27,13 @@ export const getThumbPositionInTrack = (value, trackWidth, min, max) => {
   return thumbPosition;
 };
 
-export const getDiscreteValue = (value, numbersArray) => {
+export const getClosestDiscreteNumber = (value, numbersArray) => {
   const min = numbersArray[0];
   const max = numbersArray[numbersArray.length - 1];
 
-  if (value <= min) {
-    return min;
-  }
+  if (value <= min) return min;
 
-  if (value >= max) {
-    return max;
-  }
+  if (value >= max) return max;
 
   const closest = numbersArray.reduce((a, b) => {
     return Math.abs(b - value) < Math.abs(a - value) ? b : a;

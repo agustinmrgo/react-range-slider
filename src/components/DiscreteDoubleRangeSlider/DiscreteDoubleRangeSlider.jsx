@@ -3,14 +3,26 @@ import {
   getThumbValueInRange,
   getProgressWidth,
   getThumbPositionInTrack,
+  getClosestDiscreteNumber,
 } from "../../utils/helpers";
 
-export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
+const getStepsPositions = (steps, trackWidth, min, max) => [
+  ...steps.map((step) => getThumbPositionInTrack(step, trackWidth, min, max)),
+];
+
+export const DiscreteDoubleRangeSlider = ({
+  minValue = 0,
+  maxValue = 100,
+  steps,
+  onValueChange,
+}) => {
   const slider = useRef(null);
-  const thumbs = [useRef(null), useRef(null)];
-  const progress = useRef(null);
   const track = useRef(null);
+  const [trackWidth, setTrackWidth] = useState(0);
+  const progress = useRef(null);
+  const thumbs = [useRef(null), useRef(null)];
   const [thumbPositions, setThumbPositions] = useState([0, 0]);
+  const [thumbsOffsets, setThumbsOffsets] = useState([0, 0]);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -29,11 +41,22 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
       ),
     ];
     setThumbPositions(initThumbPositions);
+    setTrackWidth(track.current.offsetWidth);
+    //setear thumbsOffsets aca ?
   }, []);
+
+  const startDragging = (e, thumbIndex) => {
+    setIsDragging(true);
+    const pointerX = e.clientX || e.changedTouches[0].clientX;
+    const newThumbsOffsets = thumbsOffsets.map((thumbOffset, index) =>
+      index === thumbIndex ? thumbs[index].offsetLeft - pointerX : thumbOffset
+    );
+    console.log("newThumbsOffsets", newThumbsOffsets);
+    setThumbsOffsets(newThumbsOffsets);
+  };
 
   const dragThumb = (event, index) => {
     if (event.target !== event.currentTarget && isDragging) {
-      const trackWidth = track.current.offsetWidth;
       const thumbWidth = thumbs[index].current.firstChild.offsetWidth;
       const thumbX = event.clientX || event.touches[0].clientX;
       const trackOffset = track.current.getBoundingClientRect().left;
@@ -42,8 +65,20 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         thumbX,
         trackOffset,
         thumbWidth
-      );
+      ); // obtain new thumb position
       const newThumbPositions = [...thumbPositions];
+      const stepsPositions = getStepsPositions(
+        steps,
+        trackWidth,
+        minValue,
+        maxValue
+      );
+      // console.log("stepsPositions", stepsPositions);
+      // const closestDiscretePosition = getClosestDiscreteNumber(
+      //   progressWidth,
+      //   stepsPositions
+      // );
+      // newThumbPositions[index] = closestDiscretePosition;
       newThumbPositions[index] = progressWidth;
       // move setThumbPositions call to handleDragEnd function and validate there?
       setThumbPositions(newThumbPositions);
@@ -94,7 +129,27 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
             transform: `translateX(${thumbPositions[0]}px)`,
           }}
         />
+        {steps &&
+          steps.map((step, index) => (
+            <div
+              key={step}
+              className="slider-mark"
+              style={{
+                position: "absolute",
+                top: "-20px",
+                left: `${getThumbPositionInTrack(
+                  step,
+                  trackWidth,
+                  minValue,
+                  maxValue
+                )}px`,
+              }}
+            >
+              {step}
+            </div>
+          ))}
       </div>
+
       {thumbPositions.map((position, index) => (
         <div
           ref={thumbs[index]}
@@ -110,8 +165,8 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
             backgroundColor: "#09f",
             cursor: "pointer",
           }}
-          onMouseDown={() => !isDragging && setIsDragging(true)}
-          onTouchStart={() => !isDragging && setIsDragging(true)}
+          onMouseDown={(e, index) => startDragging(e, index)}
+          onTouchStart={(e, index) => startDragging(e, index)}
           onMouseMove={(e) => dragThumb(e, index)}
           onMouseUp={(e) => stopDragging(e, index)}
         >
