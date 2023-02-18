@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   getThumbValueInRange,
   getProgressWidth,
-  getThumbPositionInTrack
+  getThumbPositionInTrack,
 } from "../../utils/helpers";
 
 export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
@@ -26,7 +26,7 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         track.current.offsetWidth,
         minValue,
         maxValue
-      )
+      ),
     ];
     setThumbPositions(initThumbPositions);
   }, []);
@@ -45,6 +45,7 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
       );
       const newThumbPositions = [...thumbPositions];
       newThumbPositions[index] = progressWidth;
+      // move setThumbPositions call to handleDragEnd function and validate there?
       setThumbPositions(newThumbPositions);
       onValueChange(
         newThumbPositions.map((position) =>
@@ -52,22 +53,24 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         )
       );
     }
-    event.stopPropagation();
+    // event.stopPropagation();
   };
 
   const stopDragging = (event, index) => {
-    if (event.target !== event.currentTarget) {
+    // if (event.target !== event.currentTarget) {
+    if (isDragging) {
       setIsDragging(false);
       thumbs[index].current.removeEventListener("mousemove", dragThumb);
       thumbs[index].current.removeEventListener("touchmove", dragThumb);
-      thumbs[index].current.removeEventListener("mouseup", () =>
-        stopDragging(index)
+      thumbs[index].current.removeEventListener("mouseup", (e) =>
+        stopDragging(e, index)
       );
       thumbs[index].current.removeEventListener("touchend", () =>
         stopDragging(index)
       );
     }
-    event.stopPropagation();
+    // }
+    // event.stopPropagation();
   };
 
   return (
@@ -88,7 +91,7 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
             height: "6px",
             backgroundColor: "#09f",
             width: `${thumbPositions[1] - thumbPositions[0]}px`,
-            transform: `translateX(${thumbPositions[0]}px)`
+            transform: `translateX(${thumbPositions[0]}px)`,
           }}
         />
       </div>
@@ -99,16 +102,16 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
           className="slider-thumb"
           style={{
             position: "absolute",
-            top: "6px",
+            top: "10px",
             left: `${position}px`,
-            width: "32px",
-            height: "32px",
+            width: "24px",
+            height: "24px",
             borderRadius: "50%",
             backgroundColor: "#09f",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
-          onMouseDown={() => setIsDragging(true)}
-          onTouchStart={() => setIsDragging(true)}
+          onMouseDown={() => !isDragging && setIsDragging(true)}
+          onTouchStart={() => !isDragging && setIsDragging(true)}
           onMouseMove={(e) => dragThumb(e, index)}
           onMouseUp={(e) => stopDragging(e, index)}
         >
@@ -118,10 +121,10 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "22px",
-              height: "22px",
+              width: "16px",
+              height: "16px",
               borderRadius: "50%",
-              backgroundColor: "#fff"
+              backgroundColor: "#fff",
             }}
           />
         </div>

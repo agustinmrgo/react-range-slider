@@ -23,7 +23,7 @@ export default function Excercise1() {
           maxValue={100}
           onValueChange={handlePriceChange}
         />
-        <p>${price} </p>
+        <p>$ {price}</p>
         <DoubleRangeSlider
           minValue={30}
           maxValue={85}
@@ -32,7 +32,7 @@ export default function Excercise1() {
         <p>
           {priceRange.map((price, index) => (
             <span key={index} style={{ margin: "0 15px" }}>
-              ${price}
+              $ {price}
             </span>
           ))}
         </p>
