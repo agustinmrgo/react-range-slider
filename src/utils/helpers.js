@@ -20,6 +20,17 @@ export const getProgressWidth = (
     Math.min(trackWidth, newThumbPosition - trackOffset - thumbWidth / 2)
   );
 
+export const getThumbMovingPosition = (
+  trackWidth,
+  newThumbPosition,
+  trackOffset,
+  thumbWidth
+) =>
+  Math.max(
+    0,
+    Math.min(trackWidth, newThumbPosition - trackOffset - thumbWidth / 2)
+  );
+
 export const getThumbPositionInTrack = (value, trackWidth, min, max) => {
   const range = max - min;
   const ratio = (value - min) / range;
