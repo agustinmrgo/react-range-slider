@@ -3,7 +3,6 @@ import { getThumbValueInRange } from "../../utils/helpers";
 
 export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
   const [thumbPosition, setThumbPosition] = useState(0);
-  // const [thumb2Position, setThumb2Position] = useState(0);
   const slider = useRef(null);
   const thumb = useRef(null);
   const progress = useRef(null);
@@ -56,7 +55,7 @@ export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
           style={{
             height: "6px",
             backgroundColor: "#09f",
-            width: `${thumbPosition}px`
+            width: `${thumbPosition}px`,
           }}
         />
       </div>
@@ -71,7 +70,7 @@ export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
           height: "32px",
           borderRadius: "50%",
           backgroundColor: "#09f",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         onMouseDown={startDragging}
         onTouchStart={startDragging}
@@ -85,7 +84,7 @@ export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
             width: "22px",
             height: "22px",
             borderRadius: "50%",
-            backgroundColor: "#fff"
+            backgroundColor: "#fff",
           }}
         />
       </div>
