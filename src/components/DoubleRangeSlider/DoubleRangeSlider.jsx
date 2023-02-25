@@ -45,7 +45,6 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
       );
       const newThumbPositions = [...thumbPositions];
       newThumbPositions[index] = progressWidth;
-      // move setThumbPositions call to handleDragEnd function and validate there?
       setThumbPositions(newThumbPositions);
       onValueChange(
         newThumbPositions.map((position) =>
@@ -55,18 +54,8 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
     }
   };
 
-  const stopDragging = (event, index) => {
-    if (isDragging) {
-      setIsDragging(false);
-      thumbs[index].current.removeEventListener("mousemove", dragThumb);
-      thumbs[index].current.removeEventListener("touchmove", dragThumb);
-      thumbs[index].current.removeEventListener("mouseup", (e) =>
-        stopDragging(e, index)
-      );
-      thumbs[index].current.removeEventListener("touchend", () =>
-        stopDragging(index)
-      );
-    }
+  const stopDragging = () => {
+    if (isDragging) setIsDragging(false);
   };
 
   return (

@@ -89,13 +89,11 @@ export const DiscreteDoubleRangeSlider = ({
         minValue,
         maxValue
       );
-      // console.log("newThumbValue ", newThumbValue);
       const closestDiscreteValue = getClosestDiscreteNumber(newThumbValue, [
         minValue,
         ...steps,
         maxValue,
       ]);
-      // console.log("closestDiscreteValue ", closestDiscreteValue);
       const closestDiscretePosition = getThumbPositionInTrack(
         closestDiscreteValue,
         trackWidth,
