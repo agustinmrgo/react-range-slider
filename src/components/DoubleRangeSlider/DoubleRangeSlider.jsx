@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   getThumbValueInRange,
-  getProgressWidth,
+  getThumbMovingPosition,
   getThumbPositionInTrack,
 } from "../../utils/helpers";
 
@@ -37,7 +37,7 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
       const thumbWidth = thumbs[index].current.firstChild.offsetWidth;
       const thumbX = event.clientX || event.touches[0].clientX;
       const trackOffset = track.current.getBoundingClientRect().left;
-      const progressWidth = getProgressWidth(
+      const progressWidth = getThumbMovingPosition(
         trackWidth,
         thumbX,
         trackOffset,
@@ -53,11 +53,9 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         )
       );
     }
-    // event.stopPropagation();
   };
 
   const stopDragging = (event, index) => {
-    // if (event.target !== event.currentTarget) {
     if (isDragging) {
       setIsDragging(false);
       thumbs[index].current.removeEventListener("mousemove", dragThumb);
@@ -69,8 +67,6 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         stopDragging(index)
       );
     }
-    // }
-    // event.stopPropagation();
   };
 
   return (

@@ -9,17 +9,6 @@ export const getThumbValueInRange = (
   return Math.round(minValue + thumbRatio * valueRange);
 };
 
-export const getProgressWidth = (
-  trackWidth,
-  newThumbPosition,
-  trackOffset,
-  thumbWidth
-) =>
-  Math.max(
-    0,
-    Math.min(trackWidth, newThumbPosition - trackOffset - thumbWidth / 2)
-  );
-
 export const getThumbMovingPosition = (
   trackWidth,
   newThumbPosition,

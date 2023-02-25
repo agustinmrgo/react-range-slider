@@ -112,18 +112,6 @@ export const DiscreteDoubleRangeSlider = ({
           )
         )
       );
-      thumbs[index].current.removeEventListener("mousemove", (e) =>
-        dragThumb(e, index)
-      );
-      thumbs[index].current.removeEventListener("touchmove", (e) =>
-        dragThumb(e, index)
-      );
-      thumbs[index].current.removeEventListener("mouseup", (e) =>
-        stopDragging(e, index)
-      );
-      thumbs[index].current.removeEventListener("touchend", (e) =>
-        stopDragging(e, index)
-      );
     }
   };
 
