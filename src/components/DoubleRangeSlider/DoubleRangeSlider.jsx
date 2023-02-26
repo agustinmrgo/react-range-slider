@@ -5,6 +5,8 @@ import {
   getThumbPositionInTrack,
 } from "../../utils/helpers";
 
+import "./doubleRangeSlider.css";
+
 export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
   const slider = useRef(null);
   const thumbs = [useRef(null), useRef(null)];
@@ -59,22 +61,12 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
   };
 
   return (
-    <div
-      ref={slider}
-      className="range-slider"
-      style={{ position: "relative", margin: "50px 0 30px", padding: "20px 0" }}
-    >
-      <div
-        ref={track}
-        className="slider-track"
-        style={{ height: "6px", backgroundColor: "#ccc" }}
-      >
+    <div ref={slider} className="range-slider">
+      <div ref={track} className="slider-track">
         <div
           ref={progress}
           className="slider-progress"
           style={{
-            height: "6px",
-            backgroundColor: "#09f",
             width: `${thumbPositions[1] - thumbPositions[0]}px`,
             transform: `translateX(${thumbPositions[0]}px)`,
           }}
@@ -85,33 +77,13 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
           ref={thumbs[index]}
           key={index}
           className="slider-thumb"
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: `${position}px`,
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            backgroundColor: "#09f",
-            cursor: "pointer",
-          }}
+          style={{ left: `${position}px` }}
           onMouseDown={() => !isDragging && setIsDragging(true)}
           onTouchStart={() => !isDragging && setIsDragging(true)}
           onMouseMove={(e) => dragThumb(e, index)}
           onMouseUp={(e) => stopDragging(e, index)}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "16px",
-              height: "16px",
-              borderRadius: "50%",
-              backgroundColor: "#fff",
-            }}
-          />
+          <div />
         </div>
       ))}
     </div>

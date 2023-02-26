@@ -6,9 +6,7 @@ import {
   getThumbMovingPosition,
 } from "../../utils/helpers";
 
-const getStepsPositions = (steps, trackWidth, min, max) => [
-  ...steps.map((step) => getThumbPositionInTrack(step, trackWidth, min, max)),
-];
+import "./discreteDoubleRangeSlider.css";
 
 export const DiscreteDoubleRangeSlider = ({
   minValue = 0,
@@ -114,16 +112,8 @@ export const DiscreteDoubleRangeSlider = ({
   };
 
   return (
-    <div
-      ref={slider}
-      className="range-slider"
-      style={{ position: "relative", margin: "50px 0 30px", padding: "20px 0" }}
-    >
-      <div
-        ref={track}
-        className="slider-track"
-        style={{ height: "6px", backgroundColor: "#ccc" }}
-      >
+    <div ref={slider} className="range-slider">
+      <div ref={track} className="slider-track">
         <div
           ref={progress}
           className="slider-progress"
@@ -140,8 +130,6 @@ export const DiscreteDoubleRangeSlider = ({
               key={step}
               className="slider-mark"
               style={{
-                position: "absolute",
-                top: "-20px",
                 left: `${getThumbPositionInTrack(
                   step,
                   trackWidth,
@@ -160,34 +148,14 @@ export const DiscreteDoubleRangeSlider = ({
           ref={thumbs[index]}
           key={index}
           className="slider-thumb"
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: `${position}px`,
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            backgroundColor: "#09f",
-            cursor: "pointer",
-          }}
+          style={{ left: `${position}px` }}
           onMouseDown={startDragging}
           onTouchStart={startDragging}
           onMouseMove={(e) => dragThumb(e, index)}
           onMouseUp={(e) => stopDragging(e, index)}
           onTouchEnd={(e) => stopDragging(e, index)}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "16px",
-              height: "16px",
-              borderRadius: "50%",
-              backgroundColor: "#fff",
-            }}
-          />
+          <div />
         </div>
       ))}
     </div>

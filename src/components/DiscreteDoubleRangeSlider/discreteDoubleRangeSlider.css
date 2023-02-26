@@ -1,6 +1,6 @@
 .range-slider {
   position: relative;
-  margin: 50px 0 30px;
+  margin: 100px 0 30px;
 }
 
 .slider-track {
@@ -11,6 +11,11 @@
 .slider-progress {
   height: 6px;
   background-color: #09f;
+}
+
+.slider-mark {
+  position: absolute;
+  top: -50px;
 }
 
 .slider-thumb {

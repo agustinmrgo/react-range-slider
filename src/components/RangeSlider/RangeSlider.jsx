@@ -5,6 +5,8 @@ import {
   getThumbMovingPosition,
 } from "../../utils/helpers";
 
+import "./rangeSlider.css";
+
 export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
   const slider = useRef(null);
   const track = useRef(null);
@@ -49,57 +51,25 @@ export const RangeSlider = ({ minValue, maxValue, onValueChange }) => {
   };
 
   return (
-    <div
-      ref={slider}
-      className="range-slider"
-      style={{ position: "relative", margin: "50px 0 30px" }}
-    >
-      <div
-        ref={track}
-        className="slider-track"
-        style={{ height: "6px", backgroundColor: "#ccc" }}
-      >
+    <div ref={slider} className="range-slider">
+      <div ref={track} className="slider-track">
         <div
           ref={progress}
           className="slider-progress"
-          style={{
-            height: "6px",
-            backgroundColor: "#09f",
-            width: `${thumbPosition}px`,
-          }}
+          style={{ width: `${thumbPosition}px` }}
         />
       </div>
       <div
         ref={thumb}
         className="slider-thumb"
-        style={{
-          position: "absolute",
-          top: "-14px",
-          left: `${thumbPosition}px`,
-          width: "32px",
-          height: "32px",
-          borderRadius: "50%",
-          backgroundColor: "#09f",
-          cursor: "pointer",
-        }}
+        style={{ left: `${thumbPosition}px` }}
         onMouseDown={startDragging}
         onTouchStart={startDragging}
         onMouseMove={dragThumb}
         onMouseUp={stopDragging}
         onTouchEnd={stopDragging}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "22px",
-            height: "22px",
-            borderRadius: "50%",
-            backgroundColor: "#fff",
-          }}
-        />
+        <div />
       </div>
     </div>
   );
