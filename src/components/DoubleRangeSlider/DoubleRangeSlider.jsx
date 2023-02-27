@@ -3,6 +3,7 @@ import {
   getThumbValueInRange,
   getThumbMovingPosition,
   getThumbPositionInTrack,
+  isNewThumbPositionValid,
 } from "../../utils/helpers";
 
 import "./doubleRangeSlider.css";
@@ -34,7 +35,7 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
   }, []);
 
   const dragThumb = (event, index) => {
-    if (event.target !== event.currentTarget && isDragging) {
+    if (isDragging) {
       const trackWidth = track.current.offsetWidth;
       const thumbWidth = thumbs[index].current.firstChild.offsetWidth;
       const thumbX = event.clientX || event.touches[0].clientX;
@@ -47,12 +48,17 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
       );
       const newThumbPositions = [...thumbPositions];
       newThumbPositions[index] = progressWidth;
-      setThumbPositions(newThumbPositions);
-      onValueChange(
-        newThumbPositions.map((position) =>
-          getThumbValueInRange(position, trackWidth, minValue, maxValue)
-        )
-      );
+
+      if (
+        isNewThumbPositionValid(newThumbPositions[index], index, thumbPositions)
+      ) {
+        setThumbPositions(newThumbPositions);
+        onValueChange(
+          newThumbPositions.map((position) =>
+            getThumbValueInRange(position, trackWidth, minValue, maxValue)
+          )
+        );
+      }
     }
   };
 

@@ -4,6 +4,7 @@ import {
   getThumbPositionInTrack,
   getClosestDiscreteNumber,
   getThumbMovingPosition,
+  isNewThumbPositionValid,
 } from "../../utils/helpers";
 
 import "./discreteDoubleRangeSlider.css";
@@ -44,7 +45,6 @@ export const DiscreteDoubleRangeSlider = ({
   const startDragging = () => setIsDragging(true);
 
   const dragThumb = (e, index) => {
-    // let newThumbPosition = -1;
     if (isDragging) {
       const thumbWidth = thumbs[index].current.firstChild.offsetWidth;
       const newThumbPositions = [...thumbPositions];
@@ -57,12 +57,16 @@ export const DiscreteDoubleRangeSlider = ({
         thumbWidth
       ); // obtain new thumb position
       newThumbPositions[index] = newThumbPosition;
-      setThumbPositions(newThumbPositions);
-      onValueChange(
-        newThumbPositions.map((position) =>
-          getThumbValueInRange(position, trackWidth, minValue, maxValue)
-        )
-      );
+      if (
+        isNewThumbPositionValid(newThumbPositions[index], index, thumbPositions)
+      ) {
+        setThumbPositions(newThumbPositions);
+        onValueChange(
+          newThumbPositions.map((position) =>
+            getThumbValueInRange(position, trackWidth, minValue, maxValue)
+          )
+        );
+      }
     }
   };
 
@@ -99,6 +103,7 @@ export const DiscreteDoubleRangeSlider = ({
         maxValue
       );
       newThumbPositions[index] = closestDiscretePosition;
+
       setThumbPositions(newThumbPositions);
       onValueChange(
         newThumbPositions.map((position) =>

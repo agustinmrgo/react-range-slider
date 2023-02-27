@@ -41,3 +41,18 @@ export const getClosestDiscreteNumber = (value, numbersArray) => {
 
   return closest;
 };
+
+export const isNewThumbPositionValid = (
+  newThumbPosition,
+  thumbIndex,
+  thumbPositions
+) => {
+  let isValid;
+  for (let index = 0; index < thumbPositions.length; index++) {
+    const position = thumbPositions[index];
+    if (index === thumbIndex) continue;
+    if (index < thumbIndex) isValid = position < newThumbPosition;
+    if (index > thumbIndex) isValid = position > newThumbPosition;
+  }
+  return isValid;
+};
