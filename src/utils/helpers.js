@@ -9,17 +9,6 @@ export const getThumbValueInRange = (
   return Math.round(minValue + thumbRatio * valueRange);
 };
 
-export const getProgressWidth = (
-  trackWidth,
-  newThumbPosition,
-  trackOffset,
-  thumbWidth
-) =>
-  Math.max(
-    0,
-    Math.min(trackWidth, newThumbPosition - trackOffset - thumbWidth / 2)
-  );
-
 export const getThumbMovingPosition = (
   trackWidth,
   newThumbPosition,
@@ -51,4 +40,19 @@ export const getClosestDiscreteNumber = (value, numbersArray) => {
   });
 
   return closest;
+};
+
+export const isNewThumbPositionValid = (
+  newThumbPosition,
+  thumbIndex,
+  thumbPositions
+) => {
+  let isValid;
+  for (let index = 0; index < thumbPositions.length; index++) {
+    const position = thumbPositions[index];
+    if (index === thumbIndex) continue;
+    if (index < thumbIndex) isValid = position < newThumbPosition;
+    if (index > thumbIndex) isValid = position > newThumbPosition;
+  }
+  return isValid;
 };
