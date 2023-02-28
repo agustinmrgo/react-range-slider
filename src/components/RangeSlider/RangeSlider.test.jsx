@@ -3,14 +3,17 @@ import { render, fireEvent } from "@testing-library/react";
 import { RangeSlider } from "./RangeSlider";
 import "@testing-library/jest-dom";
 
-import { getThumbValueInRange } from "../../utils/helpers";
-import { assert } from "console";
-
 describe("RangeSlider", () => {
   test("renders correctly with default props", () => {
     const { container } = render(<RangeSlider />);
     const slider = container.querySelector(".range-slider");
+    const track = container.querySelector(".slider-track");
+    const trackProgress = container.querySelector(".slider-progress");
+    const thumb = container.querySelector(".slider-thumb");
     expect(slider).toBeInTheDocument();
+    expect(track).toBeInTheDocument();
+    expect(trackProgress).toBeInTheDocument();
+    expect(thumb).toBeInTheDocument();
   });
 
   test("calls handler when dragged", () => {
@@ -25,7 +28,7 @@ describe("RangeSlider", () => {
     const thumb = container.querySelector(".slider-thumb");
 
     fireEvent.mouseDown(thumb, { clientX: 10 });
-    fireEvent.mouseMove(thumb, { clientX: 10 + 10 });
+    fireEvent.mouseMove(thumb, { clientX: 20 });
     expect(onValueChangeMock).toHaveBeenCalledTimes(1);
   });
 
