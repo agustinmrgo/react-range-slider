@@ -24,7 +24,7 @@ export const getThumbPositionInTrack = (value, trackWidth, min, max) => {
   const range = max - min;
   const ratio = (value - min) / range;
   const thumbPosition = ratio * trackWidth;
-  return thumbPosition;
+  return Math.max(0, Math.min(trackWidth, thumbPosition));
 };
 
 export const getClosestDiscreteNumber = (value, numbersArray) => {
