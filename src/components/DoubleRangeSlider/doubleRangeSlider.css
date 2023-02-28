@@ -18,6 +18,7 @@
   top: -14px;
   width: 32px;
   height: 32px;
+  transform: translate(-50%, 0%);
   background-color: #09f;
   border-radius: 50%;
   cursor: pointer;

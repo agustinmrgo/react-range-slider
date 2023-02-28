@@ -14,25 +14,43 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
   const progress = useRef(null);
   const track = useRef(null);
   const [thumbPositions, setThumbPositions] = useState([0, 0]);
+  const [thumbValues, setThumbValues] = useState([minValue, maxValue]);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
+    const trackWidth = track.current.offsetWidth;
     const initThumbPositions = [
-      getThumbPositionInTrack(
-        minValue,
-        track.current.offsetWidth,
-        minValue,
-        maxValue
-      ),
-      getThumbPositionInTrack(
-        maxValue,
-        track.current.offsetWidth,
-        minValue,
-        maxValue
-      ),
+      getThumbPositionInTrack(minValue, trackWidth, minValue, maxValue),
+      getThumbPositionInTrack(maxValue, trackWidth, minValue, maxValue),
     ];
     setThumbPositions(initThumbPositions);
   }, []);
+
+  useEffect(() => {
+    const trackWidth = track.current.offsetWidth;
+    const newPositions = [
+      getThumbPositionInTrack(thumbValues[0], trackWidth, minValue, maxValue),
+      getThumbPositionInTrack(thumbValues[1], trackWidth, minValue, maxValue),
+    ];
+    setThumbPositions(newPositions);
+    const newThumbValues = newPositions.map((position, index) => {
+      const newThumbValue = getThumbValueInRange(
+        position,
+        track.current.offsetWidth,
+        minValue,
+        maxValue
+      );
+      if (index === 0 && newThumbValue < minValue) {
+        return minValue;
+      }
+      if (index === 1 && newThumbValue > maxValue) {
+        return maxValue;
+      }
+      return newThumbValue;
+    });
+    setThumbValues(newThumbValues);
+    onValueChange(newThumbValues);
+  }, [minValue, maxValue]);
 
   const dragThumb = (event, index) => {
     if (isDragging) {
@@ -53,11 +71,11 @@ export const DoubleRangeSlider = ({ minValue, maxValue, onValueChange }) => {
         isNewThumbPositionValid(newThumbPositions[index], index, thumbPositions)
       ) {
         setThumbPositions(newThumbPositions);
-        onValueChange(
-          newThumbPositions.map((position) =>
-            getThumbValueInRange(position, trackWidth, minValue, maxValue)
-          )
+        const newThumbValues = newThumbPositions.map((position) =>
+          getThumbValueInRange(position, trackWidth, minValue, maxValue)
         );
+        setThumbValues(newThumbValues);
+        onValueChange(newThumbValues);
       }
     }
   };
